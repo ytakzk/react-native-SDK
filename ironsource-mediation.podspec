@@ -15,9 +15,17 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm}"
 
-  s.dependency "React-Core"
+  s.dependency "React"
   s.dependency "IronSourceSDK","7.2.4"
   
-  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => '' }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => '' }
+  s.subspec "Core" do |ss|
+    ss.source_files  = "ios/**/*.{h,m}"
+  end
+  
+  if defined?($RNIronSourceAsStaticFramework)
+    Pod::UI.puts "#{s.name}: Using overridden static_framework value of '#{$RNIronSourceAsStaticFramework}'"
+    s.static_framework = $RNIronSourceAsStaticFramework
+  else
+    s.static_framework = false
+  end
 end
